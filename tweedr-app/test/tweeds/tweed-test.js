@@ -1,14 +1,29 @@
 const { expect } = require('chai'),
   supertest = require('supertest'),
   api = supertest('http://localhost:3000'),
-  Tweed = require('../models').tweed;
+  Tweed = require('../../models').tweed;
+
+let tweedId,
+  tweedLength;
 
 // canary
 describe('canary test', function() {
   it('should return true', function() {
     expect(true).to.equal(true);
-  })
-})
+  });
+});
+
+before(function(done) {
+  Tweed.findAll()
+    .then(tweeds => {
+      tweedsLength = tweeds.length;
+      tweedId = tweeds[tweedsLength-2].id;
+      console.log('tweeds length ', tweedsLength);
+      console.log('tweed id ', tweedId);
+      done();
+    })
+    .catch(err => done(err));
+});
 
 // INDEX route
 describe('GET /tweeds', function() {
@@ -67,7 +82,7 @@ describe('POST /tweeds/:id', function() {
 describe('GET /tweeds/:id', function() {
   it('should return a 200 response', function(done) {
     api
-      .get('/tweeds/2')
+      .get(`/tweeds/${tweedId}`)
       .expect(200)
       .end(function(err, res) {
         if (err) {
@@ -83,7 +98,7 @@ describe('GET /tweeds/:id', function() {
 describe('GET /tweeds/:id/edit', function() {
   it('should return a 200 response', function(done) {
     api
-      .get('/tweeds/2/edit')
+      .get(`/tweeds/${tweedId}/edit`)
       .expect(200)
       .end(function(err, res) {
         if (err) {
@@ -99,7 +114,7 @@ describe('GET /tweeds/:id/edit', function() {
 describe('PUT /tweeds/:id', function() {
   it('should return a 302 response', function(done) {
     api
-      .put('/tweeds/2')
+      .put(`/tweeds/${tweedId}`)
       .send({
         name: 'I love my place'
       })
@@ -116,20 +131,6 @@ describe('PUT /tweeds/:id', function() {
 
 // DELETE route
 describe('DELETE /tweeds/:id', function() {
-  let tweedsLength, tweedId;
-
-  before(function(done) {
-    Tweed.findAll()
-      .then(tweeds => {
-        tweedsLength = tweeds.length;
-        tweedId = tweeds[tweedsLength-2].id;
-        console.log('tweeds length ', tweedsLength);
-        console.log('tweed id ', tweedId);
-        done();
-      })
-      .catch(err => done(err));
-  });
-
   it('should return an empty body in the response', function(done) {
     api
       .delete(`/tweeds/${tweedId}`)
@@ -151,7 +152,6 @@ describe('DELETE /tweeds/:id', function() {
         if (err) {
           return done(err);
         }
-
 
         expect(res.body).to.be.empty;
         done();

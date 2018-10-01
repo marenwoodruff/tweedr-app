@@ -4,7 +4,7 @@
   <ul>
     <% tweeds.forEach((tweed) => { %>
       <li class="margin-bottom">
-        <h3><%= tweed.name %></h3>
+        <h3><a href="/tweeds/<%= tweed.id %>"><%= tweed.name %></a></h3>
         <p>up votes: <%= tweed.upVote %></p>
         <p>down votes: <%= tweed.downVote %></p>
       </li>
