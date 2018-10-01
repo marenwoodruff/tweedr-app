@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "start:dev": "nodemon ./bin/www",
+    "reset": "dropdb tweedr_app_development && createdb tweedr_app_development && sequelize db:migrate && sequelize db:seed:all",
+    "test": "mocha test/**/*.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

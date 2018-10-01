@@ -1,0 +1,15 @@
+<h1 class="margin-bottom">all tweeds</h1>
+
+<% if (tweeds.length) { %>
+  <ul>
+    <% tweeds.forEach((tweed) => { %>
+      <li class="margin-bottom">
+        <h3><%= tweed.name %></h3>
+        <p>up votes: <%= tweed.upVote %></p>
+        <p>down votes: <%= tweed.downVote %></p>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <h1>add some tweeds!</h1>
+<% } %>
